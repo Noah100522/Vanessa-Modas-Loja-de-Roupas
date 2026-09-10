@@ -65,8 +65,8 @@ if (lookbook) {
       <span class="film-note" aria-hidden="true">Vanessa Modas · Fashion Experience</span>
       <div class="film-frame">
         <div class="film-media">
-          <img class="film-poster" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=86" alt="Editorial feminino Vanessa Modas" loading="lazy">
-          <video muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=86" aria-label="Fashion film Vanessa Modas">
+          <img class="film-poster" src="./assets/vanessa-look-creme.jpg" alt="Modelo com look creme da Vanessa Modas" loading="lazy">
+          <video muted loop playsinline preload="auto" poster="./assets/vanessa-look-creme.jpg" aria-label="Fashion film Vanessa Modas">
             <source src="./assets/vanessa-fashion-film.mp4" type="video/mp4">
           </video>
           <div class="film-shade"></div>
