@@ -39,6 +39,52 @@ const updateScrollProgress = () => {
 window.addEventListener('scroll', updateScrollProgress, { passive: true });
 updateScrollProgress();
 
+// Cinematic fashion showcase. The local MP4 path is intentionally ready for the
+// official/authorized Vanessa Modas footage; the poster remains as graceful fallback.
+const lookbook = document.querySelector('.lookbook');
+if (lookbook) {
+  const filmStyles = document.createElement('link');
+  filmStyles.rel = 'stylesheet';
+  filmStyles.href = './video-showcase.css';
+  document.head.appendChild(filmStyles);
+
+  const film = document.createElement('section');
+  film.className = 'fashion-film section-shell';
+  film.id = 'fashion-film';
+  film.innerHTML = `
+    <div class="film-heading reveal">
+      <div><span class="kicker">Vanessa Fashion Film</span><h2>Moda feita para <em>entrar em cena.</em></h2></div>
+      <p>Movimento, atitude e estilo em uma experiência visual que transforma a coleção em protagonista.</p>
+    </div>
+    <div class="film-stage reveal" data-film-tilt>
+      <span class="film-index" aria-hidden="true">01</span>
+      <span class="film-note" aria-hidden="true">Vanessa Modas · Fashion Experience</span>
+      <div class="film-frame">
+        <div class="film-media">
+          <img class="film-poster" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=86" alt="Editorial feminino Vanessa Modas" loading="lazy">
+          <video muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=86" aria-label="Fashion film Vanessa Modas">
+            <source src="./assets/vanessa-fashion-film.mp4" type="video/mp4">
+          </video>
+          <div class="film-shade"></div>
+          <div class="film-status"><i></i> Fashion film</div>
+          <div class="film-brand"><small>Nova coleção · Vanessa Modas</small><strong>A tendência é ser feliz.</strong></div>
+        </div>
+      </div>
+      <div class="film-card film-card-left"><small>NEW SEASON</small><strong>Vista sua atitude.</strong></div>
+      <div class="film-card film-card-right"><small>FEMININO</small><strong>Seu look. Seu momento.</strong></div>
+    </div>`;
+  lookbook.insertAdjacentElement('afterend', film);
+  film.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+
+  const video = film.querySelector('video');
+  const media = film.querySelector('.film-media');
+  video?.addEventListener('canplay', () => {
+    media?.classList.add('has-video');
+    if (!reducedMotion) video.play().catch(() => {});
+  }, { once: true });
+  video?.addEventListener('error', () => media?.classList.remove('has-video'));
+}
+
 const canTilt = window.matchMedia('(pointer:fine)').matches && !reducedMotion;
 
 if (canTilt) {
@@ -67,6 +113,19 @@ if (canTilt) {
     stage.addEventListener('pointerleave', () => {
       if (frame) frame.style.transform = 'rotateX(3deg) rotateY(-2deg) translateZ(0)';
     });
+  });
+
+  const filmStage = document.querySelector('[data-film-tilt]');
+  const filmFrame = filmStage?.querySelector('.film-frame');
+  filmStage?.addEventListener('pointermove', (event) => {
+    if (!filmFrame) return;
+    const rect = filmStage.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    filmFrame.style.transform = `translateX(-50%) rotateX(${2 - y * 4}deg) rotateY(${-2 + x * 6}deg) translateZ(14px)`;
+  });
+  filmStage?.addEventListener('pointerleave', () => {
+    if (filmFrame) filmFrame.style.transform = 'translateX(-50%) rotateX(2deg) rotateY(-2deg)';
   });
 
   const cursorGlow = document.querySelector('.cursor-glow');
