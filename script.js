@@ -99,6 +99,10 @@ if (lookbook) {
   const renderFilmScrub = () => {
     renderedProgress += (targetProgress - renderedProgress) * (reducedMotion ? 1 : 0.14);
     film.style.setProperty('--film-progress', renderedProgress.toFixed(5));
+    const phase = (center) => Math.max(0, 1 - Math.abs(renderedProgress - center) * 8);
+    film.style.setProperty('--film-copy-1', phase(0.18).toFixed(4));
+    film.style.setProperty('--film-copy-2', phase(0.5).toFixed(4));
+    film.style.setProperty('--film-copy-3', phase(0.82).toFixed(4));
     if (video && Number.isFinite(filmDuration) && Math.abs(video.currentTime - renderedProgress * filmDuration) > 0.025) {
       video.currentTime = Math.min(Math.max(0, filmDuration - 0.04), renderedProgress * filmDuration);
     }
