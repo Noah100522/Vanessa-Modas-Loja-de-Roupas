@@ -1,15 +1,22 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+const revealElements = document.querySelectorAll('.reveal');
+let revealObserver;
 
-document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+if ('IntersectionObserver' in window) {
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealElements.forEach((element) => revealObserver.observe(element));
+} else {
+  revealElements.forEach((element) => element.classList.add('visible'));
+}
 
 document.querySelector('#year').textContent = new Date().getFullYear();
 
@@ -83,7 +90,10 @@ if (lookbook) {
       <span class="film-scroll-hint">ROLE PARA DIRIGIR O FILME</span>
     </div>`;
   lookbook.insertAdjacentElement('afterend', film);
-  film.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+  film.querySelectorAll('.reveal').forEach((element) => {
+    if (revealObserver) revealObserver.observe(element);
+    else element.classList.add('visible');
+  });
 
   const video = film.querySelector('video');
   const media = film.querySelector('.film-media');

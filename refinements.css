@@ -1,5 +1,51 @@
 /* Refinements requested after visual QA */
 
+.skip-link{
+  position:fixed;
+  left:16px;
+  top:12px;
+  z-index:200;
+  padding:11px 16px;
+  border-radius:999px;
+  background:var(--ink);
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  text-decoration:none;
+  transform:translateY(-150%);
+  transition:transform .2s;
+}
+.skip-link:focus{transform:none}
+
+.announcement{
+  border-block:1px solid var(--line);
+  background:rgba(255,250,242,.62);
+  overflow:hidden;
+}
+.announcement-track{
+  width:min(1180px,calc(100% - 48px));
+  min-height:39px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(24px,5vw,70px);
+  color:var(--muted);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.announcement-track span{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.announcement-track i{color:var(--gold);font-style:normal}
+
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+
+/* The page stays readable if JavaScript is unavailable. */
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(24px)}
+.js .reveal.visible{opacity:1;transform:none}
+
 .experience-image{overflow:hidden}
 
 .image-stamp{
@@ -124,6 +170,13 @@
 }
 
 @media(max-width:620px){
+  .announcement-track{
+    width:min(100% - 28px,1180px);
+    min-height:36px;
+    justify-content:center;
+  }
+  .announcement-track span{font-size:9px}
+  .announcement-track span:not(:first-child){display:none}
   .image-stamp{
     right:14px;
     bottom:14px;
@@ -149,6 +202,7 @@
 }
 
 @media(prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;transform:none;transition:none}
   .whatsapp-pulse{animation:none}
   .floating-whatsapp::before{display:none}
 }
